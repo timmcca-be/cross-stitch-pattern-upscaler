@@ -1,0 +1,16 @@
+* {
+    font-family: sans-serif;
+    image-rendering: crisp-edges;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    align-items: flex-start;
+}
+
+h1, p {
+    margin: 0;
+}
