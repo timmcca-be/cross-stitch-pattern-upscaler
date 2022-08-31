@@ -61,4 +61,5 @@ function paint() {
     ctx.stroke();
 
     resultElement.attr("src", canvas.toDataURL());
+    resultElement.attr("alt", "The cross-stitch pattern based on your uploaded file")
 }
