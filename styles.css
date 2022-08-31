@@ -14,3 +14,16 @@ body {
 h1, p {
     margin: 0;
 }
+
+label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.resultContainer {
+    width: 100%;
+    overflow-x: scroll;
+}

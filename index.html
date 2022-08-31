@@ -13,12 +13,14 @@
         <label>
             Image:
             <input type="file" />
-            <img src="#" alt="" />
+            <img id="preview" src="#" alt="" />
         </label>
         <label>
             Pixel size:
-            <input type="number" value="8" min="1" />
+            <input id="pixelSizeInput" type="number" value="8" min="1" />
         </label>
-        <canvas></canvas>
+        <div class="resultContainer">
+            <img id="result" src="#" alt="" />
+        </div>
     </body>
 </html>

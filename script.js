@@ -1,14 +1,37 @@
 const lineThickness = 1;
 
+let pixelSizeInput, previewElement, resultElement;
+
+$(() => {
+    pixelSizeInput = $("#pixelSizeInput")
+    previewElement = $("#preview");
+    resultElement = $("#result");
+
+    $(":file").change(function() {
+        if (this.files == null && this.files.length === 0) {
+            return;
+        }
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            previewElement.attr("src", event.target.result);
+            previewElement.attr("alt", "A preview of your uploaded file")
+            setTimeout(paint, 0);
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
+
+    pixelSizeInput.change(paint);
+});
+
 function paint() {
-    const pixelSize = Number.parseInt($("input[type=number]").val());
+    const pixelSize = Number.parseInt(pixelSizeInput.val());
     if (Number.isNaN(pixelSize)) {
         return;
     }
 
-    const imageElement = $("img");
-    const width = imageElement.width();
-    const height = imageElement.height();
+    const width = previewElement.width();
+    const height = previewElement.height();
 
     const scaleFactor = pixelSize + lineThickness;
     const scaledImageWidth = width * scaleFactor;
@@ -16,15 +39,14 @@ function paint() {
     const canvasWidth = lineThickness + scaledImageWidth;
     const canvasHeight = lineThickness + scaledImageHeight;
 
-    const canvas = $("canvas")[0];
+    const canvas = document.createElement("canvas");
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
     const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvasWidth + lineThickness, canvasHeight + lineThickness);
     ctx.imageSmoothingEnabled = false;
 
-    ctx.drawImage(imageElement[0], lineThickness, lineThickness, scaledImageWidth, scaledImageHeight);
+    ctx.drawImage(previewElement[0], lineThickness, lineThickness, scaledImageWidth, scaledImageHeight);
 
     for (let i = 0; i <= width; i++) {
         const x = i * scaleFactor + lineThickness / 2;
@@ -37,21 +59,6 @@ function paint() {
         ctx.lineTo(canvasWidth, y);
     }
     ctx.stroke();
+
+    resultElement.attr("src", canvas.toDataURL());
 }
-
-$(() => {
-    $(":file").change(function() {
-        if (this.files == null && this.files.length === 0) {
-            return;
-        }
-        const reader = new FileReader();
-
-        reader.onload = (event) => {
-            $("img").attr("src", event.target.result);
-            setTimeout(paint, 0);
-        };
-        reader.readAsDataURL(this.files[0]);
-    });
-
-    $("input[type=number]").change(paint);
-});
